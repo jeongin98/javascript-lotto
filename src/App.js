@@ -1,7 +1,23 @@
 class App {
-
   constructor() {
     this.userMoney;
+    this.lottoNumberSet = [];
+  }
+
+  setLottoNumber() {
+    const playTimes = userMoney % 1000;
+
+    // n번 반복
+    for (let i = 0; i < playTimes; i++) {
+      const lottoNum = [];
+      while (lottoNum.length < 6) {
+        const number = MissionUtils.Random.pickNumberInRange(1, 45);
+        if (!lottoNum.includes(number)) {
+          lottoNum.push(number);
+        }
+      }
+      lottoNumberSet.push(lottoNum);
+    }
   }
 
   checkUserInput(userInput) {
@@ -22,6 +38,7 @@ class App {
 
   play() {
     this.getUserInput();
+    this.setLottoNumber();
   }
 }
 
