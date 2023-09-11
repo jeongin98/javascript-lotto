@@ -12,6 +12,11 @@ class Lotto {
     }
   }
 
+  // private 필드인 numbers 출력해주는 메서드
+  printLottoNum() {
+    console.log("private numb : " + this.#numbers);
+  }
+
   // TODO: 추가 기능 구현
 }
 
