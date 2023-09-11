@@ -5,9 +5,11 @@ class App {
 
   constructor() {
     this.userMoney;
+    this.wholeLottoNum = []; // 이중 배열인 상태로 저장됨
     this.userLottoNum = [];
     this.bonusNumber;
-    this.wholeLottoNum = []; // 이중 배열인 상태로 저장됨
+
+
   }
   getUserInput() {
     MissionUtils.Console.readLine('구입금액을 입력해주세요.', (userInput) => {
@@ -41,6 +43,15 @@ class App {
       // Lotto의 private 필드 number에 잘 저장되었나 출력해보기
       // const lotto = new Lotto(this.userLottoNum); 
       // lotto.printLottoNum(); 
+    });
+    getUserBonusNum(); // 여기서 호출이 맞나
+    return;
+  }
+
+  getUserBonusNum() {
+    MissionUtils.Console.readLine('보너스 번호를 입력해 주세요.', (userInput) => {
+      // 보너스 숫자도 유효성 검사 필요
+      this.bonusNumber = userInput;
     });
     return;
   }
