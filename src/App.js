@@ -1,23 +1,35 @@
+const MissionUtils = require("@woowacourse/mission-utils"); // 우테코 API
+const Lotto = require("./Lotto");
+
 class App {
+
   constructor() {
     this.userMoney;
-    this.lottoNumberSet = [];
+    this.userLottoNum = [];
+    this.bonusNumber;
+    this.wholeLottoNum = []; // 이중 배열인 상태로 저장됨
+  }
+  getUserInput() {
+    MissionUtils.Console.readLine('구입금액을 입력해주세요.', (userInput) => {
+      this.checkUserInput(userInput);
+      this.userMoney = userInput;
+      this.setLottoNumber();
+    });
   }
 
   setLottoNumber() {
-    const playTimes = userMoney % 1000;
-
+    const playTimes = this.userMoney / 1000;
+    console.log("playTimes : " + playTimes);
     // n번 반복
     for (let i = 0; i < playTimes; i++) {
-      const lottoNum = [];
-      while (lottoNum.length < 6) {
-        const number = MissionUtils.Random.pickNumberInRange(1, 45);
-        if (!lottoNum.includes(number)) {
-          lottoNum.push(number);
-        }
-      }
-      lottoNumberSet.push(lottoNum);
+      const numbers = MissionUtils.Random.pickUniqueNumbersInRange(1, 45, 6);
+      // 오름차순
+      this.wholeLottoNum.push(numbers.sort(function (a, b) {
+        return a - b;
+      }));
+      console.log("전체 : " + this.wholeLottoNum);
     }
+
   }
 
   checkUserInput(userInput) {
@@ -27,19 +39,13 @@ class App {
     return;
   }
 
-  getUserInput() {
-    MissionUtils.Console.readLine('구입금액을 입력해주세요.', (userInput) => {
-      this.checkUserInput(userInput);
-      this.userMoney = userInput;
-    });
-  }
-
-
 
   play() {
     this.getUserInput();
-    this.setLottoNumber();
   }
 }
+
+const app = new App();
+app.play();
 
 module.exports = App;
