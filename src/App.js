@@ -34,17 +34,21 @@ class App {
     this.getUserLotto();
   }
 
+
+
+
+
   getUserLotto() {
     MissionUtils.Console.readLine('당첨 번호를 입력해 주세요.', (userInput) => {
       this.userLottoNum = userInput.split(',');
       // Lotto 클래스에서 유효성 검사 
       new Lotto(this.userLottoNum);
-
+      this.getUserBonusNum(); // 여기서 호출이 맞나
       // Lotto의 private 필드 number에 잘 저장되었나 출력해보기
       // const lotto = new Lotto(this.userLottoNum); 
       // lotto.printLottoNum(); 
     });
-    getUserBonusNum(); // 여기서 호출이 맞나
+
     return;
   }
 
@@ -52,8 +56,38 @@ class App {
     MissionUtils.Console.readLine('보너스 번호를 입력해 주세요.', (userInput) => {
       // 보너스 숫자도 유효성 검사 필요
       this.bonusNumber = userInput;
+      this.calculateReward();
     });
-    return;
+
+  }
+
+
+  calculateReward() {
+    // let matchCount = 0; // 일치하는 숫자 카운트 변수 초기화
+
+
+    for (let oneLotto of this.wholeLottoNum) {
+      let matchCount = 0;
+      let bonusSame = false;
+      console.log("oneLotto  : " + oneLotto);
+      //for (let digit of oneLotto) {
+      if (oneLotto.filter(x => this.userLottoNum.includes(x)))
+        matchCount++; // 일치하는 숫자 발견 시 카운트 증가
+
+      console.log("matchCount : " + matchCount);
+      // 보너스 체크 -> true로 바꾸기
+      console.log("this.bonusNumber : " + this.bonusNumber);
+      if (oneLotto.includes(this.bonusNumber)) {
+        bonusSame = true;
+
+        console.log("bonusSame1 : " + bonusSame);
+      }
+
+      console.log("bonusSame2 : " + bonusSame);
+      //this.jeongsan(matchCount, bonusSame);
+      // }
+      console.log("일치 개수 : " + matchCount);
+    }
   }
 
   checkUserInput(userInput) {
@@ -64,7 +98,6 @@ class App {
 
   play() {
     this.getUserInput();
-
   }
 }
 
