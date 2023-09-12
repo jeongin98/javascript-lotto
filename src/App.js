@@ -62,6 +62,21 @@ class App {
 
   }
 
+  // 당첨금 정산 및 수익률 출력
+  printMoneyReward() {
+    MissionUtils.Console.print(
+      `당첨 통계
+    ---
+    3개 일치(5, 000원) - ${this.matchThree}개
+    4개 일치(50, 000원) - ${this.matchFour}개
+    5개 일치(1, 500, 000원) - ${this.matchFive}개
+    5개 일치, 보너스 볼 일치(30, 000, 000원) - ${this.matchFiveAndBonus}개
+    6개 일치(2, 000, 000, 000원) - ${this.matchSix}개
+    총 수익률은 ${this.rateOfReturn}% 입니다.`
+    );
+
+  }
+
 
   // 정산 및 수익률 계산 함수
   calculateMoneyReward(matchCount, bonusSame) {
@@ -105,7 +120,7 @@ class App {
       }
       this.calculateMoneyReward(matchCount, bonusSame);
     });
-
+    this.printMoneyReward();
   }
 
 
