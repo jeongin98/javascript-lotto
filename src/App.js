@@ -1,3 +1,41 @@
+/*
+[피드백]
+
+리팩토링은 커밋 중간 중간에 해주기. 다 끝나고나서 하려면 많은 걸 손대야한다
+
+실제 사용자가 있다고 생각해보기
+→ 다양한 상황의 예외 처리를 미리 고민해보기
+ex) 사용자가 공백 입력, 중복 처리, 입력 및 보너스 중복 처리 등등
+
+배열 및 객체로 선언했을 것 같다
+→ this.matchSix = 0; this.matchFiveAndBonus = 0; ...
+→ (객체로 고치면)
+reward = {
+  firstWin : 
+  secondWin
+}
+
+유효성 검사 함수명을 통일 시키기
+→ check함수명과 validate 함수명을 통일 
+
+Boolean 값의 변수명은 is 나 has 접두사로 쓰기 
+→ bonusSame → isBonusSame
+
+변수명이 동사로 시작하면 착각할 수도 있다. 명사형으로 써주기
+→ playTimes
+
+Lotto 클래스와 App 클래스 
+→ 일단은 App에 모든 함수를 작성했지만, 함수를 다시 한번 보면서 Lotto와 App(게임진행) 중에 어디에 더 적합한지 고민해보기
+
+MVC패턴 적용하는 것보다 기본기가 가장 중요하다 
+→ 기본기 = 함수명 잘 짓기 & 함수가 한 가지 일을 하기 ...
+EX) UI와 로직 모듈화 
+→ 분리 근거를 갖고있는 것이 중요
+→ MVC은 기본기가 쌓인 이후에 적용할 것
+
+*/
+
+
 const MissionUtils = require("@woowacourse/mission-utils"); // 우테코 API
 const Lotto = require("./Lotto");
 
@@ -14,8 +52,8 @@ class App {
     this.matchFour = 0;
     this.matchThree = 0;
     this.rateOfReturn = 0; // rateOfReturn을 클래스 멤버 변수로 선언
-
   }
+
   getUserInput() {
     MissionUtils.Console.readLine('구입금액을 입력해주세요.', (userInput) => {
       this.checkUserInput(userInput);
@@ -26,7 +64,6 @@ class App {
 
   setLottoNumber() {
     const playTimes = this.userMoney / 1000;
-    console.log("playTimes : " + playTimes);
     // n번 반복
     for (let i = 0; i < playTimes; i++) {
       const numbers = MissionUtils.Random.pickUniqueNumbersInRange(1, 45, 6); // 배열 반환
@@ -34,23 +71,17 @@ class App {
       this.wholeLottoList.push(numbers.sort(function (a, b) {
         return a - b;
       }));
-      console.log("전체 : " + this.wholeLottoList);
     }
     this.getUserLotto();
   }
 
   getUserLotto() {
-    MissionUtils.Console.readLine('당첨 번호를 입력해 주세요.', (userInput) => {
-      this.userLottoNum = userInput.split(','); // 배열 반환
-      // Lotto 클래스에서 유효성 검사 
-      new Lotto(this.userLottoNum);
-      this.getUserBonusNum(); // 여기서 호출이 맞나
-      // Lotto의 private 필드 number에 잘 저장되었나 출력해보기
-      // const lotto = new Lotto(this.userLottoNum); 
-      // lotto.printLottoNum(); 
+    MissionUtils.Console.readLine('당첨 번호를 입력해 주세요.', (userInput) => { // readLine은 문자열을 반환
+      this.userLottoNum = userInput.split(',').map(Number); // 문자가 저장된 배열 반환 ['1','2','3','4','5','6']
+      console.log("this.userLottoNum :" + this.userLottoNum);
+      new Lotto(this.userLottoNum); // 입력 유효성 검사
+      this.getUserBonusNum();
     });
-
-    return;
   }
 
   getUserBonusNum() {
@@ -59,7 +90,6 @@ class App {
       this.bonusNumber = userInput;
       this.calculateReward();
     });
-
   }
 
   // 당첨금 정산 및 수익률 출력
@@ -112,9 +142,11 @@ class App {
     // this.wholeLottoNum와 oneLotto와 this.userLottoNum 와 oneLottoList 모두 배열 맞음(isArray 결과시 모두 true 나옴)
     // oneLottoList에 저장된 것들도 Number로, 문제 없음
     // 배열 내용도 잘 저장되어 있는 상황
+
+    // 문제 해결
+    // 
     this.wholeLottoList.forEach((oneLottoList) => {
       let matchCount = oneLottoList.filter((nums) => this.userLottoNum.includes(nums)).length; // 맞춘 로또 숫자 개수 반환
-      console.log("matchCount : " + matchCount); // 계속 0만 나옴 ㅠㅠ
       if (oneLottoList.includes(this.bonusNumber)) { // 실행이 안 됨
         bonusSame = true;
       }
