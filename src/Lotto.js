@@ -10,6 +10,7 @@ class Lotto {
         if (numbers.length !== 6) {
             throw new Error("[ERROR] 로또 번호는 6개여야 합니다.");
         }
+        // TODO: 추가 기능 구현
         const numPattern = /^[0-9]*$/;
         if (numPattern.test(numbers)) {
             throw new Error("[ERROR] 숫자만 입력하세요.");
@@ -25,7 +26,7 @@ class Lotto {
         });
     }
 
-    // TODO: 추가 기능 구현 // ReCheckPlz
+
 }
 
 module.exports = Lotto;
